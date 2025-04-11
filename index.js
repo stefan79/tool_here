@@ -43,7 +43,7 @@ app.use(limiter);
 app.use('/', routes);
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   //console.error('Server error:', err.message);
   res.status(500).json({
     error: 'Internal server error',
