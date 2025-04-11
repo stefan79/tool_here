@@ -24,11 +24,11 @@ const discover = (client) => (request) => {
 
 const queryDiscover = (client) => (request) => {
     return geoCode(client)(request.location)
-    .then(mapGeoCodeToSearch (client) (request.query))
+    .then(mapGeoCodeToSearch(request.query))
     .then(discover(client))
 }
 
-const mapGeoCodeToSearch = (client) => (searchTerms) => (items) => {
+const mapGeoCodeToSearch = (searchTerms) => (items) => {
     const result = {
         query: searchTerms,
         at: items[0].position.lat+","+items[0].position.lng
