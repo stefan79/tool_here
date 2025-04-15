@@ -7,7 +7,7 @@
  * Health check endpoint
  * GET /health
  */
-exports.checkHealth = (req, res) => {
+module.exports.checkHealth = (config, client, server) => (req, res) => {
   console.log("Health Check Completed")
     res.json({ 
       status: 'ok', 

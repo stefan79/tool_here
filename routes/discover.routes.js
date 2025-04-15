@@ -4,10 +4,12 @@
  */
 
 const express = require('express');
-const router = express.Router();
-const discoverController = require('../controllers/discover.controller');
 
-// Forward geocoding - convert address to coordinates
-router.get('/', discoverController.discover);
-
-module.exports = router;
+module.exports.discoverRoutes = (config, client, server) => {
+    const router = express.Router();
+    const discoverController = require('../controllers/discover.controller');
+    
+    // Forward geocoding - convert address to coordinates
+    router.get('/', discoverController.discover(config, client, server));
+    return router    
+};

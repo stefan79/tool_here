@@ -14,8 +14,6 @@ const discover = (client) => (request) => {
         at: request.at
     })
     .then((response) => {
-        console.log("Dump Data :", response.data)
-        console.log("Dump Reqeust:", response.request)
         return Promise.resolve(response)
 
     })

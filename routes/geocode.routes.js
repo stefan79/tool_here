@@ -4,10 +4,13 @@
  */
 
 const express = require('express');
-const router = express.Router();
-const geocodeController = require('../controllers/geocode.controller');
 
-// Forward geocoding - convert address to coordinates
-router.get('/', geocodeController.geocode);
-
-module.exports = router;
+module.exports.geoRoutes = (config, client, server) => {
+    const router = express.Router();
+    const geocodeController = require('../controllers/geocode.controller');
+    
+    // Forward geocoding - convert address to coordinates
+    router.get('/', geocodeController.geoCode(config, client, server));
+    return router
+    
+}
