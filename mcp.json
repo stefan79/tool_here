@@ -1,0 +1,9 @@
+{
+    "mcpServers": {
+      "my-server": {
+        "url": "http://localhost:3000",
+        "sseEndpoint": "/mcp/sse",
+        "messagesEndpoint": "/mcp/messages"
+      }
+    }
+  }
