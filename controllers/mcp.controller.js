@@ -18,7 +18,6 @@ module.exports.routeMessage = (config, client, server) =>  (req, res) => {
   const sessionId = req.query.sessionId;
   const transport = transports[sessionId];
 
-  console.log('Is req readable?', req.readable);
   if (transport) {
     return transport.handlePostMessage(req, res); // Forward messages to the server
   } else {
