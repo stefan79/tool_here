@@ -9,6 +9,7 @@ describe('Config', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
+    jest.resetModules();
     // Clear all environment variables before each test
     process.env = { ...originalEnv };
     jest.clearAllMocks();
@@ -35,7 +36,7 @@ describe('Config', () => {
       });
     });
 
-    it('should use environment variables when set', () => {
+    it('should use environment variables when set', async () => {
       process.env.PORT = '8080';
       process.env.NODE_ENV = 'production';
       process.env.RATE_LIMIT_WINDOW_MS = '3600000';
@@ -46,7 +47,7 @@ describe('Config', () => {
       process.env.HERE_ROUTING_URL = 'https://test-routing-url';
 
       // Require config again to get fresh values
-      jest.isolateModules(async () => {
+      await jest.isolateModules(async () => {
         const { config } = await import('./config');
         expect(config).toEqual({
           port: 8080,
