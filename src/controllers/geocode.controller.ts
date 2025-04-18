@@ -3,10 +3,14 @@
  * Handles geocoding and reverse geocoding operations
  */
 
-const {errorHandler, serializeReponse} = require("./util.js")
+import { AppConfig } from '../config';
+import { HereApi } from '../clients/here';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { Request, Response } from 'express';
+import { errorHandler, serializeResponse } from './util'
 
-exports.geoCode = (config, client, server) => (req, res) => {
-  return client.geoCode(req.query.query)
-    .then(serializeReponse(req, res))
+export const geoCode = (config: AppConfig, client: HereApi, server: McpServer) => (req: Request, res: Response) => {
+  return client.geoCode(req.query.query as string)
+    .then(serializeResponse(req, res))
     .catch(errorHandler(req, res));
 };

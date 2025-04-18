@@ -3,9 +3,12 @@
  * Provides endpoints for monitoring server health
  */
 
-const express = require('express');
+import express, { Router } from 'express';
+import { AppConfig } from '../config';
+import { HereApi } from '../clients/here';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 
-module.exports.mcpRoutes = (config, client, server) => {
+export const mcpRoutes = (config: AppConfig, client: HereApi, server: McpServer): Router => {
     const router = express.Router();
     const {routeSse, routeMessage} = require('../controllers/mcp.controller');
     

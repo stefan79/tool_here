@@ -7,7 +7,12 @@
  * Health check endpoint
  * GET /health
  */
-module.exports.checkHealth = (config, client, server) => (req, res) => {
+import { AppConfig } from '../config';
+import { HereApi } from '../clients/here';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { Request, Response } from 'express';
+
+export const checkHealth = (config:   AppConfig, client: HereApi, server: McpServer) => (req: Request, res: Response) => {
   console.log("Health Check Completed")
     res.json({ 
       status: 'ok', 

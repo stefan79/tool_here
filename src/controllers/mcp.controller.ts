@@ -1,8 +1,12 @@
-const { SSEServerTransport } = require ("@modelcontextprotocol/sdk/server/sse.js");
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+import { AppConfig } from '../config';
+import { HereApi } from '../clients/here';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { Request, Response } from 'express';
 
-const transports = {}; // Store active SSE transports by session ID
+const transports: Record<string, SSEServerTransport> = {}; // Store active SSE transports by session ID
 
-module.exports.routeSse = (config, client, server) =>  (req, res) => {
+export const routeSse = (config: AppConfig, client: HereApi, server: McpServer) => (req: Request, res: Response) => {
   const transport = new SSEServerTransport("/messages", res);
   transports[transport.sessionId] = transport;
 
@@ -14,8 +18,8 @@ module.exports.routeSse = (config, client, server) =>  (req, res) => {
   return server.connect(transport);
 }
 
-module.exports.routeMessage = (config, client, server) =>  (req, res) => {
-  const sessionId = req.query.sessionId;
+export const routeMessage = (config: AppConfig, client: HereApi, server: McpServer) => (req: Request, res: Response) => {
+  const sessionId = req.query.sessionId as string;
   const transport = transports[sessionId];
 
   if (transport) {

@@ -10,12 +10,12 @@ if (envResult.error) {
   throw new Error('⚠️  Couldn\'t find .env file  ⚠️');
 }
 
-interface RateLimitConfig {
+export interface RateLimitConfig {
   windowMs: number;
   maxRequests: number;
 }
 
-interface AppConfig {
+export interface AppConfig {
   port: number;
   nodeEnv: string;
   rateLimit: RateLimitConfig;
@@ -52,3 +52,4 @@ export const validateConfig = (): void => {
     throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
   }
 };
+

@@ -1,25 +1,23 @@
-
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const config = require('./lib/config.js');
-const routes = require('../routes/index.js');
-const mcp = require('./lib/mcp.js');
+import { config, validateConfig } from './config';
+import {createMCPServer} from './mcp';
+import { createHereClient } from './clients/here.js';
+import { buildExpressServer } from './express';
 
 // Validate critical configuration
 try {
-  config.validateConfig();
-} catch (error) {
+  validateConfig();
+} catch (error: any) {
   console.error(`ERROR: ${error.message}`);
   process.exit(1);
 }
 
-const hereClient = require('./clients/here.js')(config)
-const server = mcp(config, hereClient)
-const app = require('./lib/express.js')(config, hereClient, server)
+const hereClient = createHereClient(config);
+const mcpServer = createMCPServer(config, hereClient);
+const app = buildExpressServer(config, hereClient, mcpServer);
 
 // Start the server
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(config.PORT, () => {
-    console.log(`MCP Server running on port ${config.PORT}`);
+  app.listen(config.port, () => {
+    console.log(`MCP Server running on port ${config.port}`);
   });
 }
