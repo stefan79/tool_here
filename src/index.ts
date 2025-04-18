@@ -2,7 +2,7 @@
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const config = require('./lib/config.js');
-const routes = require('./routes');
+const routes = require('../routes/index.js');
 const mcp = require('./lib/mcp.js');
 
 // Validate critical configuration

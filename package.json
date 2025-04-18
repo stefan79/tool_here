@@ -4,12 +4,13 @@
   "description": "A MCP server to deliver tooling around geo searches.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "debug": "nodemon --inspect-brk index.js",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "debug": "ts-node-dev --inspect-brk src/index.ts",
     "test": "jest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "inspector": "npx @modelcontextprotocol/inspector"
   },
   "author": "",
@@ -26,13 +27,22 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.24.0",
+    "@eslint/js": "^8.56.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.24",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
     "axios-logger": "^2.8.1",
-    "eslint": "^9.24.0",
+    "eslint": "^8.56.0",
     "eslint-plugin-jest": "^28.11.0",
     "globals": "^16.0.0",
     "jest": "^29.7.0",
-    "supertest": "^7.1.0"
+    "supertest": "^7.1.0",
+    "ts-jest": "^29.1.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
   },
   "repository": {
     "type": "git",
