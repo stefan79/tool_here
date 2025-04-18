@@ -3,15 +3,15 @@ import { AxiosError } from 'axios';
 
 export const errorHandler = (req: Request, res: Response) => (error: AxiosError | Error) => {
     //We are dealing with an Axios Error
-    if(error.request){
+    if(error instanceof AxiosError){
         const url = `${error.request.method} ${error.request.baseUrl}${error.request.url}`
         res.status(500).json(
             {
                 type: "Backend Request Failure",
                 error: error.toJSON(),
                 url,
-                status: error.response.status,
-                details: error.response.data
+                status: error.response?.status,
+                details: error.response?.data
             }
         )
     } else {

@@ -21,7 +21,7 @@ async function startServer() {
     // Start the server
     if (process.env.NODE_ENV !== 'test') {
       app.listen(config.port, () => {
-        console.log(`MCP Server running on port ${config.port}`);
+        console.log(`MCP Server running on port ${app.get('port')}`);
       });
     }
   } catch (error) {
