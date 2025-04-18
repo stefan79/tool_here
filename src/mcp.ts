@@ -28,7 +28,7 @@ export const createMCPServer = (config: AppConfig, hereClient: HereApi): McpServ
         location: z.string(),
         query: z.string()
       },
-      async (args, extra) => {
+      async (args, _extra) => {
         const result = await hereClient.discover({
           location: args.location,
           query: args.query

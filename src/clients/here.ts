@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, Method } from 'axios';
-import axiosLogger from 'axios-logger';
-import {AppConfig,  config } from '../config';
+import { AppConfig } from '../config';
 
 interface Position {
     lat: number;
@@ -23,7 +22,21 @@ interface SearchRequest {
     at: string;
 }
 
-export type HereClient = (method: Method, url: string, params: Record<string, unknown>) => Promise<any>;
+interface HereApiResponse<T> {
+  data: {
+    items?: T[];
+  };
+}
+
+interface HereGeoCodeItem {
+  title: string;
+  address: {
+    label: string;
+  };
+  position: Position;
+}
+
+export type HereClient = (method: Method, url: string, params: Record<string, unknown>) => Promise<HereApiResponse<HereGeoCodeItem>>;
 
 const geoCode = (client: HereClient) => (query: string): Promise<GeoCodeItem[]> => {
     return client("get", "/geocode", {
@@ -58,22 +71,22 @@ const mapGeoCodeToSearch = (searchTerms: string) => (items: GeoCodeItem[]): Prom
     return Promise.resolve(result);
 };
 
-const mapGeoCodeResponse = (response: any): Promise<GeoCodeItem[]> => {
+const mapGeoCodeResponse = (response: HereApiResponse<HereGeoCodeItem>): Promise<GeoCodeItem[]> => {
     if (!response.data.items) {
         return Promise.reject(new Error("No items in response"));
     }
-    return Promise.resolve(response.data.items.map((item: any) => ({
+    return Promise.resolve(response.data.items.map((item: HereGeoCodeItem) => ({
         title: item.title,
         address: item.address.label,
         position: item.position
     })));
 };
 
-const mapDiscoveryResponse = (response: any): Promise<GeoCodeItem[]> => {
+const mapDiscoveryResponse = (response: HereApiResponse<HereGeoCodeItem>): Promise<GeoCodeItem[]> => {
     if (!response.data.items) {
         return Promise.reject(new Error("No items in response"));
     }
-    return Promise.resolve(response.data.items.map((item: any) => ({
+    return Promise.resolve(response.data.items.map((item: HereGeoCodeItem) => ({
         title: item.title,
         address: item.address.label,
         position: item.position

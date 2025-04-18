@@ -18,7 +18,7 @@ export const routeSse = (config: AppConfig, client: HereApi, server: McpServer) 
   return server.connect(transport);
 }
 
-export const routeMessage = (config: AppConfig, client: HereApi, server: McpServer) => (req: Request, res: Response) => {
+export const routeMessage = (_config: AppConfig, _client: HereApi, _server: McpServer) => (req: Request, res: Response) => {
   const sessionId = req.query.sessionId as string;
   const transport = transports[sessionId];
 

@@ -8,9 +8,9 @@ import { AppConfig } from '../config';
 import { HereApi } from '../clients/here';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 
-export const mcpRoutes = (config: AppConfig, client: HereApi, server: McpServer): Router => {
+export const mcpRoutes = async (config: AppConfig, client: HereApi, server: McpServer): Promise<Router> => {
     const router = express.Router();
-    const {routeSse, routeMessage} = require('../controllers/mcp.controller');
+    const {routeSse, routeMessage} = await import('../controllers/mcp.controller');
     
     // Health check endpoint
     router.get('/sse', routeSse(config, client, server));

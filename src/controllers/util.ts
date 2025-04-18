@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
+import { AxiosError } from 'axios';
 
-export const errorHandler = (req: Request, res: Response) => (error: any) => {
+export const errorHandler = (req: Request, res: Response) => (error: AxiosError | Error) => {
     //We are dealing with an Axios Error
     if(error.request){
         const url = `${error.request.method} ${error.request.baseUrl}${error.request.url}`
@@ -23,6 +24,6 @@ export const errorHandler = (req: Request, res: Response) => (error: any) => {
     }
 }
 
-export const serializeResponse = (req: Request, res: Response) => (data: any) => {
+export const serializeResponse = <T>(req: Request, res: Response) => (data: T) => {
     res.status(200).json(data)
 }

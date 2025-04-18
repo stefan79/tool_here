@@ -46,8 +46,8 @@ describe('Config', () => {
       process.env.HERE_ROUTING_URL = 'https://test-routing-url';
 
       // Require config again to get fresh values
-      jest.isolateModules(() => {
-        const { config } = require('./config');
+      jest.isolateModules(async () => {
+        const { config } = await import('./config');
         expect(config).toEqual({
           port: 8080,
           nodeEnv: 'production',

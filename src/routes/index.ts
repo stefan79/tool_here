@@ -16,14 +16,14 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 
 // Apply rate limiting
-const limiter = (config: RateLimitConfig, client: HereApi, server: McpServer) => rateLimit({
+const limiter = (config: RateLimitConfig, _client: HereApi, _server: McpServer) => rateLimit({
     windowMs: config.windowMs,
     max: config.maxRequests,
     standardHeaders: true,
     legacyHeaders: false,
   });
 
-export const routes = (app: Express, appConfig: AppConfig, client: HereApi, server: McpServer) => {
+export const routes = async (app: Express, appConfig: AppConfig, _client: HereApi, _server: McpServer): Promise<Router> => {
     const router = Router();
 
     // Register all route modules
@@ -31,13 +31,13 @@ export const routes = (app: Express, appConfig: AppConfig, client: HereApi, serv
     app.use('/rest/',express.json());
     app.use('/rest/',cors());
     app.use('/rest/',helmet());
-    app.use('/rest/',limiter(appConfig.rateLimit, client, server));
+    app.use('/rest/',limiter(appConfig.rateLimit, _client, _server));
 
 
-    router.use('/rest/discover', discoverRoutes(appConfig, client, server)); 
-    router.use('/rest/geocode', geocodeRoutes(appConfig, client, server));
-    router.use('/rest/health', healthRoutes(appConfig, client, server));
-    router.use('/', mcpRoutes(appConfig, client, server));
+    router.use('/rest/discover', discoverRoutes(appConfig, _client, _server)); 
+    router.use('/rest/geocode', geocodeRoutes(appConfig, _client, _server));
+    router.use('/rest/health', healthRoutes(appConfig, _client, _server));
+    router.use('/', await mcpRoutes(appConfig, _client, _server));
 
     return router;
 };
