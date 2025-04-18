@@ -4,7 +4,7 @@ import { AppConfig } from './config';
 import { HereApi, GeoCodeItem} from './clients/here';
 import { name, version } from '../package.json';
 
-const mapToolResponse = (data: GeoCodeItem[]) => {
+export const mapToolResponse = (data: GeoCodeItem[]) => {
     console.log("Data", data)
     const result =  {
       content: data.map((item) => ({

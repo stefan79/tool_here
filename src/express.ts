@@ -7,7 +7,7 @@ import { routes } from './routes';
 export const buildExpressServer = async (appConfig: AppConfig, hereClient: HereApi, server: McpServer) => {
     // Initialize express app
     const app = express();
-    const _PORT = appConfig.port;
+    app.set('port', appConfig.port);
     // Register routes
     app.use('/', await routes(app, appConfig, hereClient, server));
     return app 

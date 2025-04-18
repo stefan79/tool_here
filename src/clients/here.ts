@@ -17,7 +17,7 @@ export interface DiscoverRequest {
     location: string;
 }
 
-interface SearchRequest {
+export interface SearchRequest {
     query: string;
     at: string;
 }
@@ -38,14 +38,14 @@ interface HereGeoCodeItem {
 
 export type HereClient = (method: Method, url: string, params: Record<string, unknown>) => Promise<HereApiResponse<HereGeoCodeItem>>;
 
-const geoCode = (client: HereClient) => (query: string): Promise<GeoCodeItem[]> => {
+export const geoCode = (client: HereClient) => (query: string): Promise<GeoCodeItem[]> => {
     return client("get", "/geocode", {
         q: query
     })
     .then(mapGeoCodeResponse);
 };
 
-const discover = (client: HereClient) => (request: SearchRequest): Promise<GeoCodeItem[]> => {
+export const discover = (client: HereClient) => (request: SearchRequest): Promise<GeoCodeItem[]> => {
     return client("get", '/discover', {
         q: request.query,
         at: request.at
@@ -56,7 +56,7 @@ const discover = (client: HereClient) => (request: SearchRequest): Promise<GeoCo
     .then(mapDiscoveryResponse);
 };
 
-const queryDiscover = (client: HereClient) => (request: DiscoverRequest): Promise<GeoCodeItem[]> => {
+export const queryDiscover = (client: HereClient) => (request: DiscoverRequest): Promise<GeoCodeItem[]> => {
     return geoCode(client)(request.location)
     .then(mapGeoCodeToSearch(request.query))
     .then(discover(client));
