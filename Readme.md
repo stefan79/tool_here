@@ -34,14 +34,22 @@ Tool Here is a Map Content Provider (MCP) server that integrates with HERE.com's
 3. Create a `.env` file in the root directory and configure the following environment variables:
 
     ```plaintext
-    PORT=3000
-    NODE_ENV=development
-    HERE_API_KEY=your_here_api_key
-    RATE_LIMIT_WINDOW_MS=900000
-    RATE_LIMIT_MAX_REQUESTS=100
+    # Server configuration
+    PORT=3000                        # Default: 3000
+    NODE_ENV=development             # Default: development
+
+    # Rate limiting
+    RATE_LIMIT_WINDOW_MS=900000     # Default: 900000 (15 minutes)
+    RATE_LIMIT_MAX_REQUESTS=100     # Default: 100
+
+    # HERE API configuration (required)
+    HERE_API_KEY=your_here_api_key  # Required
+    HERE_BASE_URL=https://geocode.search.hereapi.com/v1      # Optional
+    HERE_DISCOVER_URL=https://discover.search.hereapi.com/v1  # Optional
+    HERE_ROUTING_URL=https://router.hereapi.com/v8           # Optional
     ```
 
-    Replace `your_here_api_key` with your actual HERE API key.
+    > **Note**: Only `HERE_API_KEY` is required. All other variables have default values if not specified.
 
 ## Usage
 
@@ -52,4 +60,3 @@ To start the server, use the following command:
 ```bash
 npm start
 ```
-
