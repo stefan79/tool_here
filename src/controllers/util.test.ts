@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AxiosError } from 'axios';
+import { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { errorHandler, serializeResponse } from './util';
 
 describe('Controller utilities', () => {
@@ -30,7 +30,7 @@ describe('Controller utilities', () => {
         status: 404,
         statusText: 'Not Found',
         headers: {},
-        config: {} as any,
+        config: {} as InternalAxiosRequestConfig,
         data: { message: 'Not found' }
       };
 

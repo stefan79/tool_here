@@ -1,4 +1,4 @@
-import { HereClient, GeoCodeItem, geoCode, DiscoverRequest, SearchRequest, discover, queryDiscover } from './here';
+import { HereClient, geoCode, DiscoverRequest, SearchRequest, discover, queryDiscover } from './here';
 
 describe('here client', () => {
   describe('geoCode', () => {
