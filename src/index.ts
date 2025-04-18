@@ -1,6 +1,6 @@
 import { config, validateConfig } from './config';
 import {createMCPServer} from './mcp';
-import { createHereClient } from './clients/here.js';
+import { createHereClient } from './clients/here';
 import { buildExpressServer } from './express';
 
 // Validate critical configuration

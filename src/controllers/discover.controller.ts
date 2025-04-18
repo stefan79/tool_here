@@ -3,7 +3,7 @@
  * Handles geocoding and reverse geocoding operations
  */
 
-import {errorHandler, serializeResponse} from "./util.js"
+import {errorHandler, serializeResponse} from "./util"
 import { AppConfig } from '../config';
 import { HereApi } from '../clients/here';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';

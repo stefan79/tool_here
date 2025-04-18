@@ -82,7 +82,7 @@ const mapDiscoveryResponse = (response: any): Promise<GeoCodeItem[]> => {
 
 const client = (config: AppConfig): HereClient => (method: Method, url: string, params: Record<string, unknown>) => {
     const axiosInstance: AxiosInstance = axios.create();
-    axiosInstance.interceptors.request.use(axiosLogger.requestLogger);
+   //axiosInstance.interceptors.request.use(axiosLogger.requestLogger);
     return axiosInstance({
         method,
         url,
