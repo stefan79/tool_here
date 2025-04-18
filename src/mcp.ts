@@ -3,16 +3,17 @@ import { z } from 'zod';
 import { AppConfig } from './config';
 import { HereApi, GeoCodeItem} from './clients/here';
 import { name, version } from '../package.json';
+import { logger } from './utils/logger';
 
 export const mapToolResponse = (data: GeoCodeItem[]) => {
-    console.log("Data", data)
+    logger.debug('MCP data received', { data });
     const result =  {
       content: data.map((item) => ({
         type: 'text' as const,
         text: `${item.title}: ${item.address}`
     }))
     }
-    console.log("Response", result)
+    logger.debug('MCP response', { result });
     return result
 };
 

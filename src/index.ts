@@ -1,4 +1,5 @@
 import { config, validateConfig } from './config';
+import { logger } from './utils/logger';
 import {createMCPServer} from './mcp';
 import { createHereClient } from './clients/here';
 import { buildExpressServer } from './express';
@@ -7,7 +8,7 @@ import { buildExpressServer } from './express';
 try {
   validateConfig();
 } catch (error: unknown) {
-  console.error(`ERROR: ${error}`);
+  logger.error('Application error', { error: error instanceof Error ? error.message : String(error) });
   process.exit(1);
 }
 
@@ -21,11 +22,11 @@ async function startServer() {
     // Start the server
     if (process.env.NODE_ENV !== 'test') {
       app.listen(config.port, () => {
-        console.log(`MCP Server running on port ${app.get('port')}`);
+        logger.info('MCP Server started', { port: app.get('port') });
       });
     }
   } catch (error) {
-    console.error('Failed to start server:', error);
+    logger.error('Failed to start server', { error: error instanceof Error ? error.message : String(error) });
     process.exit(1);
   }
 }
