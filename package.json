@@ -16,8 +16,6 @@
     "package": "podman build -t $npm_package_name:$npm_package_version .",
     "package:run": "source .env && podman run -p 3000:3000 -e HERE_API_KEY=$HERE_API_KEY $npm_package_name:$npm_package_version",
     "package:tag": "podman tag $npm_package_name:$npm_package_version ghcr.io/stefan79/$npm_package_name:$npm_package_version",
-    "push": "podman push ghcr.io/stefan79/$npm_package_name:$npm_package_version",
-    "push:login-stefan": "op read \"op://Private/i4gjj4ch2z2z7lylkractzvbre/credential\" | podman login ghcr.io -u stefan79 --password-stdin"
   },
   "author": "",
   "license": "ISC",
