@@ -1,8 +1,8 @@
 import { config, validateConfig } from './config';
-import { logger } from './utils/logger';
 import {createMCPServer} from './mcp';
 import { createHereClient } from './clients/here';
 import { buildExpressServer } from './express';
+import { logger } from './utils/logger';
 
 // Validate critical configuration
 try {
@@ -12,7 +12,7 @@ try {
   process.exit(1);
 }
 
-const hereClient = createHereClient(config);
+const hereClient = createHereClient(config, logger);
 const mcpServer = createMCPServer(config, hereClient);
 
 async function startServer() {

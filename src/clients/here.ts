@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, Method } from 'axios';
 import { AppConfig } from '../config';
+import winston from 'winston';
 
 interface Position {
     lat: number;
@@ -93,9 +94,9 @@ const mapDiscoveryResponse = (response: HereApiResponse<HereGeoCodeItem>): Promi
     })));
 };
 
-const client = (config: AppConfig): HereClient => (method: Method, url: string, params: Record<string, unknown>) => {
+const client = (config: AppConfig, logger: winston.Logger): HereClient => (method: Method, url: string, params: Record<string, unknown>) => {
     const axiosInstance: AxiosInstance = axios.create();
-   //axiosInstance.interceptors.request.use(axiosLogger.requestLogger);
+    logger.info(`Requesting ${method} ${config.hereBaseUrl}${url}`);
     return axiosInstance({
         method,
         url,
@@ -112,8 +113,8 @@ export interface HereApi {
     discover: (request: DiscoverRequest) => Promise<GeoCodeItem[]>;
 }
 
-export const createHereClient = (config: AppConfig): HereApi => {
-    const c = client(config);
+export const createHereClient = (config: AppConfig, logger: winston.Logger): HereApi => {
+    const c = client(config, logger);
     return {
         geoCode: geoCode(c),
         discover: queryDiscover(c),
