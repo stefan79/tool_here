@@ -13,6 +13,16 @@ jobs:
       packages: write
 
     steps:
+      - name: Notify Slack on Build Start
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "🏗️ Starting new package build from main branch\nRepository: ${{ github.repository }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_GHACTION_WEBHOOK }}
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -46,3 +56,25 @@ jobs:
         run: |
           podman push ghcr.io/stefan79/${{ github.event.repository.name }}:${{ env.npm_package_version }}
           podman push ghcr.io/stefan79/${{ github.event.repository.name }}:latest
+
+      - name: Notify Slack on Build Success
+        if: success()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "✅ New package version published successfully!\n• Version: `${{ env.npm_package_version }}`\n• Latest: https://ghcr.io/stefan79/${{ github.event.repository.name }}:latest\n• Versioned: https://ghcr.io/stefan79/${{ github.event.repository.name }}:${{ env.npm_package_version }}\n• Package page: https://github.com/${{ github.repository }}/pkgs/container/${{ github.event.repository.name }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_GHACTION_WEBHOOK }}
+
+      - name: Notify Slack on Build Failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "❌ Package build failed!\nSee: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_GHACTION_WEBHOOK }}
