@@ -1,13 +1,15 @@
 import { config as dotenvConfig } from 'dotenv';
 import { resolve } from 'path';
 
-// Load environment variables from .env file
-const envResult = dotenvConfig({
-  path: resolve(__dirname, '../.env')
-});
+// Load environment variables from .env file only in non-production environments
+if (process.env.NODE_ENV !== 'production') {
+  const envResult = dotenvConfig({
+    path: resolve(__dirname, '../.env')
+  });
 
-if (envResult.error) {
-  throw new Error('⚠️  Couldn\'t find .env file  ⚠️');
+  if (envResult.error) {
+    throw new Error('⚠️  Couldn\'t find .env file  ⚠️');
+  }
 }
 
 export interface RateLimitConfig {
@@ -52,4 +54,3 @@ export const validateConfig = (): void => {
     throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
   }
 };
-
