@@ -15,7 +15,7 @@
     "inspector": "npx @modelcontextprotocol/inspector",
     "package": "podman build -t $npm_package_name:$npm_package_version .",
     "package:run": "source .env && podman run -p 3000:3000 -e HERE_API_KEY=$HERE_API_KEY $npm_package_name:$npm_package_version",
-    "package:tag": "podman tag $npm_package_name:$npm_package_version ghcr.io/stefan79/$npm_package_name:$npm_package_version",
+    "package:tag": "podman tag $npm_package_name:$npm_package_version ghcr.io/stefan79/$npm_package_name:$npm_package_version"
   },
   "author": "",
   "license": "ISC",
