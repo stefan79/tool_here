@@ -37,25 +37,27 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Package container
-        run: npm run package
+      - name: Get package info
+        id: package
+        run: |
+          echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
+          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Build container
+        run: podman build -t ${{ steps.package.outputs.name }}:${{ steps.package.outputs.version }} .
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Tag container with version and latest
+      - name: Tag container
         run: |
-          npm run package:tag
-          podman tag ghcr.io/stefan79/${{ github.event.repository.name }}:${{ env.npm_package_version }} ghcr.io/stefan79/${{ github.event.repository.name }}:latest
+          podman tag ${{ steps.package.outputs.name }}:${{ steps.package.outputs.version }} ghcr.io/stefan79/${{ steps.package.outputs.name }}:${{ steps.package.outputs.version }}
+          podman tag ${{ steps.package.outputs.name }}:${{ steps.package.outputs.version }} ghcr.io/stefan79/${{ steps.package.outputs.name }}:latest
 
       - name: Push container
         run: |
-          podman push ghcr.io/stefan79/${{ github.event.repository.name }}:${{ env.npm_package_version }}
-          podman push ghcr.io/stefan79/${{ github.event.repository.name }}:latest
+          podman push ghcr.io/stefan79/${{ steps.package.outputs.name }}:${{ steps.package.outputs.version }}
+          podman push ghcr.io/stefan79/${{ steps.package.outputs.name }}:latest
 
       - name: Notify Slack on Build Success
         if: success()
@@ -63,7 +65,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ New package version published successfully!\n• Version: `${{ env.npm_package_version }}`\n• Latest: https://ghcr.io/stefan79/${{ github.event.repository.name }}:latest\n• Versioned: https://ghcr.io/stefan79/${{ github.event.repository.name }}:${{ env.npm_package_version }}\n• Package page: https://github.com/${{ github.repository }}/pkgs/container/${{ github.event.repository.name }}"
+              "text": "✅ New package version published successfully!\n• Version: `${{ steps.package.outputs.version }}`\n• Latest: https://ghcr.io/stefan79/${{ steps.package.outputs.name }}:latest\n• Versioned: https://ghcr.io/stefan79/${{ steps.package.outputs.name }}:${{ steps.package.outputs.version }}\n• Package page: https://github.com/${{ github.repository }}/pkgs/container/${{ steps.package.outputs.name }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_GHACTION_WEBHOOK }}
